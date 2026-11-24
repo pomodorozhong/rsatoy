@@ -350,7 +350,7 @@ docs/              this document
 
 ## Releases
 
-GitHub Actions builds the Windows (amd64) and macOS (arm64 and amd64) files on each version tag and attaches them to a GitHub release with a `SHA256SUMS` file. The files are not code-signed at first; see the Install section of the README for the warnings this causes.
+GitHub Actions (`.github/workflows/release.yml`) builds the Windows (amd64) and macOS (arm64 and amd64) files on each version tag and attaches them to a GitHub release with a `SHA256SUMS` file. The files are bare binaries with no archive: `rsatoy-windows-amd64.exe`, `rsatoy-macos-arm64`, and `rsatoy-macos-amd64`. The tag's version, without the leading `v`, is built in as the one `rsatoy version` shows. The files are not code-signed at first; see the Install section of the README for the warnings this causes.
 
 ## Open questions
 

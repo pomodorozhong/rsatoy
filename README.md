@@ -38,7 +38,14 @@ Full details are in [docs/design.md](docs/design.md#commands).
 
 ## Install
 
-Download the file for your system from the releases page and run it from a terminal.
+Download the file for your system from the [releases page](https://github.com/pomodorozhong/rsatoy/releases).
+
+- **Windows:** download `rsatoy-windows-amd64.exe` and double-click it.
+- **macOS:** download `rsatoy-macos-arm64` for Apple silicon or `rsatoy-macos-amd64` for Intel Macs, rename it to `rsatoy`, and run `chmod +x rsatoy` once.
+
+`SHA256SUMS` on the same page lists each file's checksum, so you can check the download.
+
+The files are not signed yet, so the first run shows a warning:
 
 - **macOS:** the first run may show an "unidentified developer" warning, because the file is not signed. Right-click it and choose Open, or run `xattr -d com.apple.quarantine rsatoy` once.
 - **Windows:** SmartScreen may show "Windows protected your PC". Choose More info, then Run anyway.
@@ -64,6 +71,17 @@ GOOS=windows GOARCH=amd64 go build -o dist/rsatoy-windows-amd64.exe ./cmd/rsatoy
 GOOS=darwin  GOARCH=arm64 go build -o dist/rsatoy-macos-arm64 ./cmd/rsatoy
 GOOS=darwin  GOARCH=amd64 go build -o dist/rsatoy-macos-amd64 ./cmd/rsatoy
 ```
+
+## Making a release
+
+Push a version tag, and GitHub Actions builds the files and publishes the release:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Do the manual check in [docs/design.md](docs/design.md#testing) first.
 
 ## Cryptography
 
