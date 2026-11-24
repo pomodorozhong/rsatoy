@@ -1,0 +1,16 @@
+       RECIPIENT (friend)       BETWEEN YOU           SENDER (you)
+       ----------------------   --------------------  --------------------
+  [1]  rsatoy init
+       make key pair
+  [2]  rsatoy pubkey            -- public key ----->  save as friend.pub
+  [3]  read fingerprint aloud   == fingerprint ====>  rsatoy encrypt
+                                                      check it matches
+  [4]  receive message          <----- message -----  type secret,
+                                                      note message ID
+  [5]  rsatoy decrypt           == message ID =====>  check it matches
+       read ID aloud
+  [6]  enter passphrase,
+       secret to clipboard
+
+  ---->  any channel is fine, low risk (green)
+  ====>  trusted channel only, call or in person (red)

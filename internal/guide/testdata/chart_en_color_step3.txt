@@ -1,0 +1,16 @@
+       RECIPIENT (friend)       BETWEEN YOU           SENDER (you)
+       ----------------------   --------------------  --------------------
+[2m  [90m[1][0m  rsatoy init[0m
+[2m       make key pair[0m
+[2m  [32m[2][0m  rsatoy pubkey            [32m-- public key ----->[0m  save as friend.pub[0m
+[1m> [31m[3][0m  read fingerprint aloud   [31m== fingerprint ====>[0m  rsatoy encrypt[0m
+[1m                                                      check it matches[0m
+[2m  [32m[4][0m  receive message          [32m<----- message -----[0m  type secret,[0m
+[2m                                                      note message ID[0m
+[2m  [31m[5][0m  rsatoy decrypt           [31m== message ID =====>[0m  check it matches[0m
+[2m       read ID aloud[0m
+[2m  [90m[6][0m  enter passphrase,[0m
+[2m       secret to clipboard[0m
+
+  [32m---->[0m  any channel is fine, low risk (green)
+  [31m====>[0m  trusted channel only, call or in person (red)

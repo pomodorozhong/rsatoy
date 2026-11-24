@@ -1,0 +1,27 @@
+How an rsatoy exchange works
+
+       RECIPIENT (friend)       BETWEEN YOU           SENDER (you)
+       ----------------------   --------------------  --------------------
+  [1]  rsatoy init
+       make key pair
+  [2]  rsatoy pubkey            -- public key ----->  save as friend.pub
+  [3]  read fingerprint aloud   == fingerprint ====>  rsatoy encrypt
+                                                      check it matches
+  [4]  receive message          <----- message -----  type secret,
+                                                      note message ID
+  [5]  rsatoy decrypt           == message ID =====>  check it matches
+       read ID aloud
+  [6]  enter passphrase,
+       secret to clipboard
+
+  ---->  any channel is fine, low risk (green)
+  ====>  trusted channel only, call or in person (red)
+
+1. Recipient: run rsatoy init to make a key pair. Nothing is sent.
+2. Recipient: send the public key to the sender by email or chat. Anyone may see it.
+3. On a call or in person, the recipient reads the fingerprint aloud. The sender runs rsatoy encrypt and only goes on if it matches.
+4. Sender: type the secret, then send the message block by email or chat. Keep the message ID on screen.
+5. Recipient: run rsatoy decrypt and read the message ID to the sender on a call. Only go on if it matches.
+6. Recipient: enter the passphrase. The secret is copied to the clipboard.
+
+Tip: run rsatoy with no arguments to be walked through each step.
