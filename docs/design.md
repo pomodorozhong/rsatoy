@@ -22,47 +22,9 @@ This document describes what rsatoy does, what it protects against, and the choi
 
 The recipient is the friend who will receive the secret. The sender is the person who has it. An **untrusted channel** is any way of sending text where someone else might read or change it: email, a chat app, a pastebin. A **trusted channel** is one where each person knows they are really talking to the other: a voice or video call, or in person.
 
-Each colored block is one step. Its note says who runs which command, which channel the step needs, and whether anything secret is sent. Solid arrows go over an untrusted channel, dashed arrows over a trusted one, and arrows that loop back stay on that person's computer.
+Each row is one step. The card on the left says which command runs, which channel the step needs, and whether anything secret is sent; its color matches the channel. The right side shows what each person does and what goes between them: solid arrows go over an untrusted channel, dashed arrows over a trusted one.
 
-```mermaid
-sequenceDiagram
-    actor R as Recipient (friend)
-    actor S as Sender (you)
-
-    rect rgba(128, 128, 128, 0.15)
-    Note over R,S: ① Make keys<br/>Command: rsatoy init --bits 3072 (recipient)<br/>Channel: none, nothing is sent
-    R->>R: Make key pair, lock private key with a passphrase
-    end
-
-    rect rgba(230, 150, 40, 0.18)
-    Note over R,S: ② Send the public key<br/>Command: rsatoy pubkey (recipient, to show it again)<br/>Channel: untrusted is fine (email, chat)<br/>Secret: no, but someone could swap it, so step ③ checks it
-    R->>S: Public key block
-    S->>S: Save as friend.pub
-    end
-
-    rect rgba(40, 170, 90, 0.18)
-    Note over R,S: ③ Check the fingerprint<br/>Command: rsatoy encrypt friend.pub (sender, shows the fingerprint)<br/>Channel: TRUSTED (call, in person)<br/>Secret: no, it proves the key is really the recipient's
-    R-->>S: Fingerprint, read aloud
-    S->>S: Confirm it matches
-    end
-
-    rect rgba(230, 150, 40, 0.18)
-    Note over R,S: ④ Encrypt and send the secret<br/>Command: same rsatoy encrypt run (sender)<br/>Channel: untrusted is fine (email, chat)<br/>Secret: yes, but encrypted, only the recipient can open it
-    S->>S: Type the secret at a hidden prompt
-    S->>R: Message block
-    end
-
-    rect rgba(128, 128, 128, 0.15)
-    Note over R,S: ⑤ Decrypt<br/>Command: rsatoy decrypt (recipient)<br/>Channel: none, nothing is sent
-    R->>R: Enter passphrase, secret goes to the clipboard
-    end
-
-    rect rgba(40, 170, 90, 0.18)
-    Note over R,S: ⑥ Confirm the sender<br/>Command: none<br/>Channel: TRUSTED (call, in person)<br/>Secret: no, it catches a fake secret from someone else
-    R-->>S: "Did you send this?"
-    S-->>R: "Yes"
-    end
-```
+![The six steps of an rsatoy exchange between the recipient and the sender](exchange.svg)
 
 The private key and the passphrase never leave the recipient's computer. The plain secret never leaves the sender's computer except inside the message block.
 
