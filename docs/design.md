@@ -112,7 +112,7 @@ This is the same DER as a normal `PUBLIC KEY` PEM file, with a different label s
 | Wrapped key length | 2 bytes, big-endian | Length of the next field, equal to the RSA key size in bytes |
 | Wrapped key | 256, 384, 512, or 1024 bytes | RSA-OAEP encryption of the 32-byte AES key |
 | Nonce | 12 bytes | AES-GCM nonce |
-| Ciphertext | secret length + 16 bytes | AES-256-GCM encryption of the secret, with the version byte and wrapped key as additional data |
+| Ciphertext | secret length + 16 bytes | AES-256-GCM encryption of the secret, with the version, wrapped key length, and wrapped key as additional data |
 
 Using the header as additional data means changing any part of it makes decryption fail. An unknown version is an error, never a guess.
 
@@ -242,7 +242,7 @@ Guided mode and `rsatoy guide` speak English or Traditional Chinese (zh-Hant), p
 4. The system's preferred UI languages: on Windows from `GetUserPreferredUILanguages`, and on macOS from `defaults read -g AppleLanguages`. macOS needs this step because a program started by double-clicking may get no `LANG`.
 5. English.
 
-The answer is matched with `golang.org/x/text/language` against the two supported languages. Only a confident match counts:
+The answer is parsed with `golang.org/x/text/language`. It means Traditional Chinese only when the language is Chinese and its script, given or most likely, is Traditional (`Hant`):
 
 | System language | Guide language |
 | --- | --- |
@@ -321,7 +321,8 @@ No other dependencies.
 ## Project layout
 
 ```text
-cmd/rsatoy/        main package: commands, prompts, output
+cmd/rsatoy/        main package: commands, flags, console setup
+internal/app/      the steps shared by commands and guided mode: prompts, checks, encrypt, decrypt
 internal/keys/     key generation, size checks, key file encode and decode, storage paths
 internal/message/  hybrid encrypt and decrypt, message format
 internal/armor/    BEGIN/END blocks and base64 wrapping

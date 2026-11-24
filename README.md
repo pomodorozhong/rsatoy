@@ -4,7 +4,7 @@ A small command-line tool for sending a secret, such as an API key, to a friend 
 
 rsatoy is only the app layer. All cryptography comes from established, audited libraries; rsatoy never implements a cipher itself. See [docs/design.md](docs/design.md) for how it works and why.
 
-> Status: design stage. Nothing is built yet.
+> Status: early version, not released yet. There are no downloads on a releases page yet; build it from source for now.
 
 ## How it works
 
@@ -45,10 +45,16 @@ Download the file for your system from the releases page and run it from a termi
 
 ## Building
 
-Needs Go 1.24 or newer.
+Needs Go 1.26 or newer.
 
 ```bash
 go build -o rsatoy ./cmd/rsatoy
+```
+
+Run the tests:
+
+```bash
+go test ./...
 ```
 
 Cross-builds from any machine:
