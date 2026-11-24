@@ -10,11 +10,12 @@ rsatoy is only the app layer. All cryptography comes from established, audited l
 
 1. Your friend runs `rsatoy init` once, choosing an RSA key size if they want (2048, 3072, 4096, or 8192 bits; 3072 by default). It makes a key pair, keeps the private key on their computer locked with a passphrase, and prints their public key and its fingerprint.
 2. Your friend sends you the public key. You both compare the fingerprint over a different channel, such as a call.
-3. You save the key to a file, run `rsatoy encrypt friend.pub`, type the secret at a hidden prompt, and get back a block of text.
+3. You save the key to a file, run `rsatoy encrypt friend.pub`, type the secret at a hidden prompt, and get back a block of text and a short message ID.
 4. You send that text any way you like. Only your friend's private key can open it.
-5. Your friend runs `rsatoy decrypt`, pastes the text, and the secret is copied to their clipboard.
+5. Your friend runs `rsatoy decrypt` and pastes the text. It shows a short message ID, which your friend reads to you over the call so you can check it matches the one `encrypt` showed you. That proves the message really came from you.
+6. Your friend enters their passphrase, and the secret is copied to their clipboard.
 
-There is a sequence diagram of who sends what to whom in [docs/design.md](docs/design.md#the-exchange-step-by-step).
+There is a diagram of who sends what to whom, step by step, in [docs/design.md](docs/design.md#the-exchange-step-by-step).
 
 ## Platforms
 

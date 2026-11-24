@@ -70,16 +70,16 @@
 <text class="cmd" x="776" y="110">same encrypt run</text>
 <rect class="badge-un" x="776" y="120" width="110" height="20" rx="10"/><text class="badge-text" x="831.0" y="134" text-anchor="middle">Untrusted OK</text>
 <text class="note" x="776" y="159">Secret, but encrypted</text>
-<rect class="card-none" x="966" y="50" width="188" height="120" rx="8"/>
-<circle class="num-none" cx="994" cy="76" r="17"/><text class="num-text" x="994" y="83" text-anchor="middle">5</text><text class="title" x="1020" y="81">Decrypt</text>
+<rect class="card-tr" x="966" y="50" width="188" height="120" rx="8"/>
+<circle class="num-tr" cx="994" cy="76" r="17"/><text class="num-text" x="994" y="83" text-anchor="middle">5</text><text class="title" x="1020" y="81">Check message ID</text>
 <text class="cmd" x="976" y="110">rsatoy decrypt</text>
-<rect class="badge-none" x="976" y="120" width="90" height="20" rx="10"/><text class="badge-text" x="1021.0" y="134" text-anchor="middle">No channel</text>
-<text class="note" x="976" y="159">Secret goes to clipboard</text>
-<rect class="card-tr" x="1166" y="50" width="188" height="120" rx="8"/>
-<circle class="num-tr" cx="1194" cy="76" r="17"/><text class="num-text" x="1194" y="83" text-anchor="middle">6</text><text class="title" x="1220" y="81">Confirm sender</text>
-<text class="cmd" x="1176" y="110">no command</text>
-<rect class="badge-tr" x="1176" y="120" width="124" height="20" rx="10"/><text class="badge-text" x="1238.0" y="134" text-anchor="middle">Trusted needed</text>
-<text class="note" x="1176" y="159">Not secret</text>
+<rect class="badge-tr" x="976" y="120" width="124" height="20" rx="10"/><text class="badge-text" x="1038.0" y="134" text-anchor="middle">Trusted needed</text>
+<text class="note" x="976" y="159">Not secret, done before step 6</text>
+<rect class="card-none" x="1166" y="50" width="188" height="120" rx="8"/>
+<circle class="num-none" cx="1194" cy="76" r="17"/><text class="num-text" x="1194" y="83" text-anchor="middle">6</text><text class="title" x="1220" y="81">Decrypt</text>
+<text class="cmd" x="1176" y="110">same decrypt run</text>
+<rect class="badge-none" x="1176" y="120" width="90" height="20" rx="10"/><text class="badge-text" x="1221.0" y="134" text-anchor="middle">No channel</text>
+<text class="note" x="1176" y="159">Secret goes to clipboard</text>
 <rect class="item-un" x="385" y="327" width="150" height="36" rx="18"/><text class="small" x="460" y="349" text-anchor="middle">public key block</text>
 <line class="arr-un" x1="460" y1="261" x2="460" y2="324" marker-end="url(#h-un)"/>
 <line class="arr-un" x1="460" y1="363" x2="460" y2="426" marker-end="url(#h-un)"/>
@@ -89,9 +89,9 @@
 <rect class="item-un" x="785" y="327" width="150" height="36" rx="18"/><text class="small" x="860" y="349" text-anchor="middle">message block</text>
 <line class="arr-un" x1="860" y1="429" x2="860" y2="366" marker-end="url(#h-un)"/>
 <line class="arr-un" x1="860" y1="327" x2="860" y2="264" marker-end="url(#h-un)"/>
-<rect class="item-tr" x="1185" y="327" width="150" height="36" rx="18"/><text class="small" x="1260" y="349" text-anchor="middle">confirmation</text>
-<line class="arr-tr" x1="1260" y1="261" x2="1260" y2="324" marker-end="url(#h-tr)"/>
-<line class="arr-tr" x1="1260" y1="363" x2="1260" y2="426" marker-end="url(#h-tr)"/>
+<rect class="item-tr" x="985" y="327" width="150" height="36" rx="18"/><text class="small" x="1060" y="349" text-anchor="middle">message ID</text>
+<line class="arr-tr" x1="1060" y1="261" x2="1060" y2="324" marker-end="url(#h-tr)"/>
+<line class="arr-tr" x1="1060" y1="363" x2="1060" y2="426" marker-end="url(#h-tr)"/>
 <rect class="action" x="180" y="209" width="160" height="52" rx="6"/>
 <text class="small" x="260" y="231" text-anchor="middle">Make key pair,</text><text class="small" x="260" y="247" text-anchor="middle">set passphrase</text>
 <rect class="action" x="380" y="209" width="160" height="52" rx="6"/>
@@ -103,13 +103,13 @@
 <rect class="action" x="580" y="429" width="160" height="52" rx="6"/>
 <text class="small" x="660" y="451" text-anchor="middle">Check it matches</text><text class="small" x="660" y="467" text-anchor="middle">the screen</text>
 <rect class="action" x="780" y="429" width="160" height="52" rx="6"/>
-<text class="small" x="860" y="451" text-anchor="middle">Type secret at</text><text class="small" x="860" y="467" text-anchor="middle">hidden prompt</text>
+<text class="small" x="860" y="451" text-anchor="middle">Type secret, note</text><text class="small" x="860" y="467" text-anchor="middle">the message ID</text>
 <rect class="action" x="780" y="209" width="160" height="52" rx="6"/>
 <text class="small" x="860" y="239" text-anchor="middle">Receive it</text>
 <rect class="action" x="980" y="209" width="160" height="52" rx="6"/>
-<text class="small" x="1060" y="231" text-anchor="middle">Enter passphrase,</text><text class="small" x="1060" y="247" text-anchor="middle">secret to clipboard</text>
+<text class="small" x="1060" y="231" text-anchor="middle">Read message ID</text><text class="small" x="1060" y="247" text-anchor="middle">aloud</text>
+<rect class="action" x="980" y="429" width="160" height="52" rx="6"/>
+<text class="small" x="1060" y="451" text-anchor="middle">Check it matches</text><text class="small" x="1060" y="467" text-anchor="middle">the ID from step 4</text>
 <rect class="action" x="1180" y="209" width="160" height="52" rx="6"/>
-<text class="small" x="1260" y="231" text-anchor="middle">Ask: did you</text><text class="small" x="1260" y="247" text-anchor="middle">send this?</text>
-<rect class="action" x="1180" y="429" width="160" height="52" rx="6"/>
-<text class="small" x="1260" y="459" text-anchor="middle">Answer: yes</text>
+<text class="small" x="1260" y="231" text-anchor="middle">Enter passphrase,</text><text class="small" x="1260" y="247" text-anchor="middle">secret to clipboard</text>
 </svg>

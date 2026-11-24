@@ -28,6 +28,8 @@ The diagram is a swimlane: time runs left to right in six steps, and each person
 
 The private key and the passphrase never leave the recipient's computer. The plain secret never leaves the sender's computer except inside the message block.
 
+Step 5 comes before step 6 on purpose: the recipient checks that the message is really the sender's before decrypting it, so a fake secret never reaches their clipboard. If they decrypt first, the one rule is not to use the secret until the message ID has been confirmed.
+
 ## Threat model
 
 **Protected against:**
@@ -35,14 +37,17 @@ The private key and the passphrase never leave the recipient's computer. The pla
 - Anyone who sees the message block in transit or at rest (email provider, chat service, someone reading a shared channel). They learn only roughly how long the secret is.
 - Tampering with the message. Any change makes decryption fail instead of producing a wrong secret.
 
-**Protected only if people compare fingerprints (step ③):**
+**Protected only if people compare fingerprints (step 3):**
 
 - Someone who swaps the public key while it travels to the sender. They could then read the secret. rsatoy cannot detect this alone, so `encrypt` shows the fingerprint and will not continue until the sender confirms it matches.
+
+**Protected only if people compare message IDs (step 5):**
+
+- Someone who swaps the message block for one of their own. Anyone with the recipient's public key can encrypt to it, so they could replace the real secret with, say, an API key for an account they control and see everything the recipient sends to it. They cannot read the real secret. A plain "did you send this?" does not catch this, because the sender would say yes thinking of their own message. Comparing the message ID does, because a different block has a different ID. `decrypt` shows the ID and will not ask for the passphrase until the recipient confirms it matches.
 
 **Not protected against:**
 
 - Malware on either computer, or someone with access to the recipient's unlocked user account.
-- Someone pretending to be the sender. Anyone with the recipient's public key can encrypt to it, which is why step ⑥ exists.
 - The recipient mishandling the secret after decrypting it.
 
 ## Cryptography
@@ -55,7 +60,7 @@ RSA cannot encrypt more than a few hundred bytes directly, and it is slow, so rs
 | Encrypt the random key | RSA-OAEP with SHA-256 for both the hash and MGF1, label `rsatoy-1` | `crypto/rsa` (`EncryptOAEP`, `DecryptOAEP`) |
 | Encrypt the secret | AES-256-GCM with a 32-byte random key and 12-byte random nonce | `crypto/aes`, `crypto/cipher` |
 | Protect the private key on disk | scrypt (N=2^15, r=8, p=1) derives a 32-byte key from the passphrase, then AES-256-GCM | `golang.org/x/crypto/scrypt`, `crypto/cipher` |
-| Fingerprint | SHA-256 of the public key's DER encoding | `crypto/sha256` |
+| Fingerprint and message ID | SHA-256 of the public key's DER encoding, or of the message bytes | `crypto/sha256` |
 | Randomness | Operating system random source | `crypto/rand` |
 
 rsatoy never uses `EncryptPKCS1v15`, raw RSA, or a key size below 2048.
@@ -111,6 +116,8 @@ This is the same DER as a normal `PUBLIC KEY` PEM file, with a different label s
 
 Using the header as additional data means changing any part of it makes decryption fail. An unknown version is an error, never a guess.
 
+**Message ID:** the first 8 bytes of SHA-256 over the decoded message bytes (not the base64 text, so line breaks and surrounding text do not change it), as 16 lowercase hex characters in groups of four, for example `7c1e 94ab 2f03 d8e6`. It is shorter than the key fingerprint because it is read aloud once per message. To fake it, someone would have to make a different message with the same 64-bit ID before the two people compare, which takes far too much work to be practical.
+
 **Private key file:**
 
 ```text
@@ -162,17 +169,17 @@ Prints the public key block and fingerprint again, from `key.pub`. No passphrase
 1. Reads the public key block from the file, or from standard input if the argument is `-`. Refuses keys under 2048 bits.
 2. Prints the fingerprint and key size, then asks "Does this match what your friend told you? [y/N]". Anything but `y` stops. `--yes` skips the question for scripts, and the docs say not to use it the first time.
 3. Reads the secret from a hidden prompt (no echo). If standard input is not a terminal and the key came from a file, reads the secret from standard input instead, so `rsatoy encrypt friend.pub < secret.txt` works.
-4. Prints the message block to standard output.
+4. Prints the message block to standard output, and its message ID to standard error, with a reminder that the recipient will read this ID back in step 5.
 
 The secret is never accepted as a command-line argument, because arguments show up in shell history and process lists.
 
 ### `rsatoy decrypt`
 
 1. Reads the message block from standard input until the END line, or from `--in <file>`.
-2. Asks for the passphrase and decrypts.
-3. Copies the secret to the clipboard and says so. It does not print the secret unless `--print` is given.
-4. With `--clear-after <seconds>` (default 60, `0` turns it off), clears the clipboard after that many seconds if it still holds the secret. rsatoy stays running in the foreground until then and says so.
-5. Reminds the recipient to confirm with the sender that they sent it (step ⑥).
+2. Prints the message ID and asks "Read this to the sender over a call. Does it match theirs? [y/N]". Anything but `y` stops before the passphrase is asked for. `--yes` skips the question for scripts.
+3. Asks for the passphrase and decrypts.
+4. Copies the secret to the clipboard and says so. It does not print the secret unless `--print` is given.
+5. With `--clear-after <seconds>` (default 60, `0` turns it off), clears the clipboard after that many seconds if it still holds the secret. rsatoy stays running in the foreground until then and says so.
 
 ### Errors
 
@@ -202,7 +209,7 @@ cmd/rsatoy/        main package: commands, prompts, output
 internal/keys/     key generation, size checks, key file encode and decode, storage paths
 internal/message/  hybrid encrypt and decrypt, message format
 internal/armor/    BEGIN/END blocks and base64 wrapping
-internal/fpr/      fingerprints
+internal/fpr/      key fingerprints and message IDs
 docs/              this document
 ```
 
@@ -213,6 +220,7 @@ docs/              this document
 - A test that a key size outside the allowed list is refused, both at `init` and when `encrypt` reads a public key.
 - A test that a message for one key fails to decrypt with another key.
 - A test that blocks are found inside surrounding text.
+- A test that the message ID is the same whether the block is wrapped, unwrapped, or surrounded by other text, and differs for two messages with the same secret.
 - CI runs `go vet` and `go test` on Windows and macOS runners.
 - Before each release, a manual check on a real Windows machine and a real Mac: init, encrypt on one, decrypt on the other, clipboard works.
 
