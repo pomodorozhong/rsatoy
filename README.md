@@ -4,7 +4,7 @@ A small command-line tool for sending a secret, such as an API key, to a friend 
 
 rsatoy is only the app layer. All cryptography comes from established, audited libraries; rsatoy never implements a cipher itself. See [docs/design.md](docs/design.md) for how it works and why.
 
-> Status: early version, not released yet. There are no downloads on a releases page yet; build it from source for now.
+> Status: early version. The first release, [v0.1.0](https://github.com/pomodorozhong/rsatoy/releases/tag/v0.1.0), has downloads for Windows and macOS; see [Install](#install).
 
 ## How it works
 
