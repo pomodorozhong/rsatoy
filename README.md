@@ -74,7 +74,7 @@ GOOS=darwin  GOARCH=amd64 go build -o dist/rsatoy-macos-amd64 ./cmd/rsatoy
 
 ## Making a release
 
-Push a version tag, and GitHub Actions builds the files and publishes the release:
+Push a version tag on `main`, after the release's changes are merged, and GitHub Actions builds the files and publishes the release:
 
 ```bash
 git tag v0.1.0
