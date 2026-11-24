@@ -8,11 +8,13 @@ rsatoy is only the app layer. All cryptography comes from established, audited l
 
 ## How it works
 
-1. Your friend runs `rsatoy init` once. It makes a key pair, keeps the private key on their computer, and prints their public key and its fingerprint.
+1. Your friend runs `rsatoy init` once, choosing an RSA key size if they want (2048, 3072, 4096, or 8192 bits; 3072 by default). It makes a key pair, keeps the private key on their computer locked with a passphrase, and prints their public key and its fingerprint.
 2. Your friend sends you the public key. You both compare the fingerprint over a different channel, such as a call.
-3. You run `rsatoy encrypt <their public key>`, type the secret at a hidden prompt, and get back a block of text.
+3. You save the key to a file, run `rsatoy encrypt friend.pub`, type the secret at a hidden prompt, and get back a block of text.
 4. You send that text any way you like. Only your friend's private key can open it.
 5. Your friend runs `rsatoy decrypt`, pastes the text, and the secret is copied to their clipboard.
+
+There is a sequence diagram of who sends what to whom in [docs/design.md](docs/design.md#the-exchange-step-by-step).
 
 ## Platforms
 
@@ -21,9 +23,9 @@ Windows and macOS are the main targets. Linux should work but is not a priority.
 ## Usage
 
 ```text
-rsatoy init                 Make your key pair and show your public key
+rsatoy init [--bits N]      Make your key pair and show your public key
 rsatoy pubkey               Show your public key and fingerprint again
-rsatoy encrypt <pubkey>     Encrypt a secret for the owner of <pubkey>
+rsatoy encrypt <file>       Encrypt a secret for the owner of the public key in <file>
 rsatoy decrypt              Decrypt a message sent to you
 ```
 
@@ -52,6 +54,6 @@ GOOS=darwin  GOARCH=arm64 go build -o dist/rsatoy-macos-arm64 ./cmd/rsatoy
 GOOS=darwin  GOARCH=amd64 go build -o dist/rsatoy-macos-amd64 ./cmd/rsatoy
 ```
 
-## About the name
+## Cryptography
 
-Despite the name, rsatoy does not use RSA by default. It uses X25519 sealed boxes, which are smaller, faster, and have fewer ways to go wrong. The name stuck from the original idea. See [docs/design.md](docs/design.md#why-not-rsa).
+rsatoy uses RSA-OAEP (SHA-256) to protect a one-time AES-256-GCM key, and AES-GCM to encrypt the secret itself. Everything comes from Go's standard library, plus scrypt from `golang.org/x/crypto` for the passphrase. See [docs/design.md](docs/design.md#cryptography).
