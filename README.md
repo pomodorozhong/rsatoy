@@ -17,6 +17,8 @@ rsatoy is only the app layer. All cryptography comes from established, audited l
 
 There is a diagram of who sends what to whom, step by step, in [docs/design.md](docs/design.md#the-exchange-step-by-step).
 
+The easiest way to use it is to run `rsatoy` with no arguments, or double-click it. It asks whether you are sending or receiving, then walks you through each step, showing where you are on a chart. `rsatoy guide` prints the same chart without doing anything.
+
 ## Platforms
 
 Windows and macOS are the main targets. Linux should work but is not a priority. rsatoy is a single file with nothing else to install.
@@ -24,6 +26,8 @@ Windows and macOS are the main targets. Linux should work but is not a priority.
 ## Usage
 
 ```text
+rsatoy                      Walk through the whole exchange step by step
+rsatoy guide                Show the exchange chart and the steps
 rsatoy init [--bits N]      Make your key pair and show your public key
 rsatoy pubkey               Show your public key and fingerprint again
 rsatoy encrypt <file>       Encrypt a secret for the owner of the public key in <file>

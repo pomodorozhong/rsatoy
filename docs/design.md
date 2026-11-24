@@ -181,6 +181,55 @@ The secret is never accepted as a command-line argument, because arguments show 
 4. Copies the secret to the clipboard and says so. It does not print the secret unless `--print` is given.
 5. With `--clear-after <seconds>` (default 60, `0` turns it off), clears the clipboard after that many seconds if it still holds the secret. rsatoy stays running in the foreground until then and says so.
 
+### `rsatoy guide`
+
+Prints the exchange chart and a short numbered list of the steps, then exits. It is the terminal version of the [diagram above](#the-exchange-step-by-step), turned on its side so it fits in 80 columns: steps run down the page, and the three lanes are columns.
+
+```text
+       RECIPIENT (friend)       BETWEEN YOU           SENDER (you)
+       ----------------------   --------------------  --------------------
+  [1]  rsatoy init
+       make key pair
+  [2]  rsatoy pubkey            -- public key ----->  save as friend.pub
+  [3]  read fingerprint aloud   == fingerprint ====>  rsatoy encrypt
+                                                      check it matches
+  [4]  receive message          <----- message -----  type secret,
+                                                      note message ID
+  [5]  rsatoy decrypt           == message ID =====>  check it matches
+       read ID aloud
+  [6]  enter passphrase,
+       secret to clipboard
+
+  ---->  any channel is fine, low risk (green)
+  ====>  trusted channel only, call or in person (red)
+```
+
+Under the chart it prints the steps in plain words, one line each, for example "5. Run rsatoy decrypt. Read the message ID to the sender over a call. Only go on if it matches."
+
+The chart uses ASCII only, so it shows correctly in any Windows or macOS terminal. When standard output is a terminal and `NO_COLOR` is not set, arrows and step numbers are colored like the diagram: green for low-risk steps, red for trusted-channel steps, gray for steps that send nothing. On Windows, rsatoy turns on the console's color support at startup, and falls back to no color if that fails.
+
+### Guided mode: `rsatoy` with no arguments
+
+Running `rsatoy` with no arguments, or double-clicking the file in Explorer or Finder, starts a step-by-step walk through the exchange. This is the main way people who do not use a terminal are expected to use it.
+
+1. Asks "Are you receiving a secret or sending one? [r/s]".
+2. Before each step, clears the screen (if it is a terminal), prints the chart with the current step marked by `>` and the other steps dimmed, and says in one or two sentences what to do and over which channel.
+3. Runs that step using the same code as the commands, so the prompts and checks are identical. It waits for Enter before moving on, so people can switch to their call or chat.
+4. At the end, says what happened and waits for Enter before exiting, so a window opened by double-clicking does not vanish.
+
+What each role does at each step:
+
+| Step | Recipient | Sender |
+| --- | --- | --- |
+| 1 | Makes a key pair, as `init` does. Skipped if a key already exists, with a note saying so. | Not shown. The sender starts at step 2. |
+| 2 | Shows the public key block and says to send it by email or chat. Offers to copy it to the clipboard. | Asks the sender to paste the public key block, or a path to a file holding it, and saves it as `friend.pub` in the current folder. |
+| 3 | Shows the fingerprint and says to read it to the sender on a call. | Shows the fingerprint and asks whether it matches what the recipient read out, as `encrypt` does. |
+| 4 | Says to wait for the message block. | Reads the secret at a hidden prompt, then shows the message block and message ID and offers to copy the block to the clipboard. |
+| 5 | Asks the recipient to paste the message block, shows its message ID, says to read it to the sender, and asks whether the sender confirmed it. | Says to listen for the ID and check it matches the one shown in step 4. |
+| 6 | Asks for the passphrase and copies the secret to the clipboard, as `decrypt` does. | Says the exchange is done. |
+
+Pressing Ctrl+C or answering no to any check stops the guide without doing anything further. Guided mode adds no new cryptography or file formats; it only calls the same functions as the commands.
+
 ### Errors
 
 Every failure prints one plain sentence and exits with a non-zero code. Decryption failures do not say why (wrong key, damaged message, or tampering), because telling them apart can leak information and guessing would mislead.
@@ -199,6 +248,7 @@ Every failure prints one plain sentence and exits with a non-zero code. Decrypti
 | `golang.org/x/crypto` | scrypt |
 | `golang.org/x/term` | Hidden passphrase and secret prompts |
 | `github.com/atotto/clipboard` | Clipboard on Windows and macOS |
+| `golang.org/x/sys` | Turning on color in the Windows console |
 
 No other dependencies.
 
@@ -210,6 +260,7 @@ internal/keys/     key generation, size checks, key file encode and decode, stor
 internal/message/  hybrid encrypt and decrypt, message format
 internal/armor/    BEGIN/END blocks and base64 wrapping
 internal/fpr/      key fingerprints and message IDs
+internal/guide/    the exchange chart, colors, and guided mode
 docs/              this document
 ```
 
@@ -221,8 +272,10 @@ docs/              this document
 - A test that a message for one key fails to decrypt with another key.
 - A test that blocks are found inside surrounding text.
 - A test that the message ID is the same whether the block is wrapped, unwrapped, or surrounded by other text, and differs for two messages with the same secret.
+- A golden-file test for the chart printed by `rsatoy guide`, with and without color, so changes to it are deliberate. When the steps change, `docs/exchange.svg` and this chart are updated in the same change.
+- Guided-mode tests for both roles that feed answers through standard input and check each step's output, including stopping when a check is answered no.
 - CI runs `go vet` and `go test` on Windows and macOS runners.
-- Before each release, a manual check on a real Windows machine and a real Mac: init, encrypt on one, decrypt on the other, clipboard works.
+- Before each release, a manual check on a real Windows machine and a real Mac: init, encrypt on one, decrypt on the other, clipboard works, and a full guided exchange started by double-clicking the file.
 
 ## Releases
 
