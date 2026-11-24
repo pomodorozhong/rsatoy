@@ -210,7 +210,7 @@ The chart uses ASCII only, so it shows correctly in any Windows or macOS termina
 
 ### Guided mode: `rsatoy` with no arguments
 
-Running `rsatoy` with no arguments, or double-clicking the file in Explorer or Finder, starts a step-by-step walk through the exchange. This is the main way people who do not use a terminal are expected to use it.
+Running `rsatoy` with no arguments, or double-clicking the file in Explorer or Finder, starts a step-by-step walk through the exchange, in the system language (see [Languages in the guide](#languages-in-the-guide)). This is the main way people who do not use a terminal are expected to use it.
 
 1. Asks "Are you receiving a secret or sending one? [r/s]".
 2. Before each step, clears the screen (if it is a terminal), prints the chart with the current step marked by `>` and the other steps dimmed, and says in one or two sentences what to do and over which channel.
@@ -230,6 +230,71 @@ What each role does at each step:
 
 Pressing Ctrl+C or answering no to any check stops the guide without doing anything further. Guided mode adds no new cryptography or file formats; it only calls the same functions as the commands.
 
+### Languages in the guide
+
+Guided mode and `rsatoy guide` speak English or Traditional Chinese (zh-Hant), picked from the system language. The other commands stay in English only, so their output is stable for scripts and for searching error messages.
+
+**Picking the language.** The first of these that gives an answer wins:
+
+1. The `--lang en` or `--lang zh-Hant` flag.
+2. The `RSATOY_LANG` environment variable, with the same values.
+3. The `LC_ALL`, `LC_MESSAGES`, or `LANG` environment variable, in that order, ignoring `C` and `POSIX`.
+4. The system's preferred UI languages: on Windows from `GetUserPreferredUILanguages`, and on macOS from `defaults read -g AppleLanguages`. macOS needs this step because a program started by double-clicking may get no `LANG`.
+5. English.
+
+The answer is matched with `golang.org/x/text/language` against the two supported languages. Only a confident match counts:
+
+| System language | Guide language |
+| --- | --- |
+| `zh-Hant`, `zh-TW`, `zh-HK`, `zh-MO` | Traditional Chinese |
+| `zh-Hans`, `zh-CN`, `zh-SG`, plain `zh` | English (see [open questions](#open-questions)) |
+| `en-*` and every other language | English |
+
+An unknown value in `--lang` or `RSATOY_LANG` is an error that lists the two allowed values.
+
+**What is translated.** Every sentence rsatoy writes in guided mode and `rsatoy guide`, including the chart, the step explanations, prompts, confirmations, and error messages. Prompts that guided mode borrows from the commands (the fingerprint and message ID checks, passphrase prompts) take the language as a parameter, and the plain commands pass English.
+
+**What is not translated.** Command names and flags (`rsatoy decrypt`), file names, the public key and message blocks, fingerprints, and message IDs. Yes or no answers are always `y` or `n`, shown as `[y/N]` in both languages.
+
+**Message catalog.** Strings live in `internal/i18n/en.json` and `internal/i18n/zh-Hant.json`, embedded in the binary with `embed`. Each string has an ID, and code looks strings up by ID. Tests make sure both files have exactly the same IDs and the same `fmt` verbs in each string.
+
+**Terms.** Traditional Chinese uses the terms common in Taiwan:
+
+| English | zh-Hant |
+| --- | --- |
+| recipient / sender | 收件人 / 寄件人 |
+| public key / private key | 公開金鑰 / 私密金鑰 |
+| key pair | 金鑰對 |
+| passphrase | 密碼片語 |
+| fingerprint | 指紋 |
+| message block / message ID | 訊息 / 訊息 ID |
+| secret | 秘密 |
+| trusted channel / untrusted channel | 可信任的管道 / 不可信任的管道 |
+| clipboard | 剪貼簿 |
+
+**The chart in Traditional Chinese.** Chinese characters take two columns in a terminal, so the chart pads columns by display width, using `golang.org/x/text/width`, not by number of characters. It still fits in 80 columns:
+
+```text
+       收件人（朋友）           兩人之間              寄件人（你）
+       ----------------------   --------------------  --------------------
+  [1]  rsatoy init
+       產生金鑰對
+  [2]  rsatoy pubkey            -- 公開金鑰 ------->  存成 friend.pub
+  [3]  唸出指紋                 == 指紋 ===========>  rsatoy encrypt
+                                                      確認相符
+  [4]  收到訊息                 <------- 訊息 ------  輸入秘密，
+                                                      記下訊息 ID
+  [5]  rsatoy decrypt           == 訊息 ID ========>  確認相符
+       唸出訊息 ID
+  [6]  輸入密碼片語，
+       秘密複製到剪貼簿
+
+  ---->  任何管道都可以，低風險（綠色）
+  ====>  只能用可信任的管道：通話或當面（紅色）
+```
+
+**Windows console.** At startup rsatoy sets the console output code page to UTF-8 (`SetConsoleOutputCP(65001)`), so Chinese text shows correctly in the old console window as well as in Windows Terminal.
+
 ### Errors
 
 Every failure prints one plain sentence and exits with a non-zero code. Decryption failures do not say why (wrong key, damaged message, or tampering), because telling them apart can leak information and guessing would mislead.
@@ -248,7 +313,8 @@ Every failure prints one plain sentence and exits with a non-zero code. Decrypti
 | `golang.org/x/crypto` | scrypt |
 | `golang.org/x/term` | Hidden passphrase and secret prompts |
 | `github.com/atotto/clipboard` | Clipboard on Windows and macOS |
-| `golang.org/x/sys` | Turning on color in the Windows console |
+| `golang.org/x/sys` | Windows console color and UTF-8 output, and the Windows UI language |
+| `golang.org/x/text` | Language matching, and character widths for the chart |
 
 No other dependencies.
 
@@ -261,6 +327,7 @@ internal/message/  hybrid encrypt and decrypt, message format
 internal/armor/    BEGIN/END blocks and base64 wrapping
 internal/fpr/      key fingerprints and message IDs
 internal/guide/    the exchange chart, colors, and guided mode
+internal/i18n/     language detection and the en and zh-Hant message catalogs
 docs/              this document
 ```
 
@@ -273,9 +340,12 @@ docs/              this document
 - A test that blocks are found inside surrounding text.
 - A test that the message ID is the same whether the block is wrapped, unwrapped, or surrounded by other text, and differs for two messages with the same secret.
 - A golden-file test for the chart printed by `rsatoy guide`, with and without color, so changes to it are deliberate. When the steps change, `docs/exchange.svg` and this chart are updated in the same change.
+- Tests that both message catalogs have the same IDs and the same `fmt` verbs.
+- Tests for language picking: each row of the table above, the order of the sources, and rejection of unknown `--lang` values.
+- A golden-file test for the Traditional Chinese chart, and a test that every chart line in both languages is at most 80 columns wide by display width.
 - Guided-mode tests for both roles that feed answers through standard input and check each step's output, including stopping when a check is answered no.
 - CI runs `go vet` and `go test` on Windows and macOS runners.
-- Before each release, a manual check on a real Windows machine and a real Mac: init, encrypt on one, decrypt on the other, clipboard works, and a full guided exchange started by double-clicking the file.
+- Before each release, a manual check on a real Windows machine and a real Mac: init, encrypt on one, decrypt on the other, clipboard works, and a full guided exchange started by double-clicking the file, once with the system set to English and once to Traditional Chinese.
 
 ## Releases
 
@@ -287,3 +357,5 @@ GitHub Actions builds the Windows (amd64) and macOS (arm64 and amd64) files on e
 2. **Clipboard timer.** Is a default 60-second auto-clear worth keeping the process running, or should it be off by default?
 3. **Key sizes.** Is the fixed list 2048, 3072, 4096, 8192 flexible enough, or do you want any multiple of 1024 in that range?
 4. **Windows on ARM.** Add a build for it, or wait until someone needs it?
+5. **Simplified Chinese.** Should `zh-Hans` and `zh-CN` systems get English, as designed, or Traditional Chinese, which most Simplified Chinese readers can follow?
+6. **Plain commands.** Should `init`, `encrypt`, and `decrypt` also follow the system language, or stay English only as designed?
