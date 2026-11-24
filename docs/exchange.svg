@@ -1,144 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="900" viewBox="0 0 1040 900" role="img">
-  <title>rsatoy exchange, step by step</title>
-  <desc>Six steps between the recipient and the sender. Each step says which command runs, which channel it needs, and whether anything secret is sent.</desc>
-  <style>
-    .bg { fill: #ffffff; }
-    text { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; fill: #2c2c2a; }
-    .title { font-size: 16px; font-weight: 600; }
-    .cmd { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; fill: #444441; }
-    .note { font-size: 13px; fill: #5f5e5a; }
-    .small { font-size: 12px; }
-    .actor-text { font-size: 15px; font-weight: 600; }
-    .lifeline { stroke: #b4b2a9; stroke-width: 1; stroke-dasharray: 4 6; }
-    .actor { fill: #f1efe8; stroke: #888780; stroke-width: 1; }
-    .action { fill: #ffffff; stroke: #888780; stroke-width: 1; }
-    .card-none { fill: #f1efe8; stroke: #b4b2a9; }
-    .card-un { fill: #faeeda; stroke: #ef9f27; }
-    .card-tr { fill: #eaf3de; stroke: #97c459; }
-    .badge-none { fill: #d3d1c7; }
-    .badge-un { fill: #fac775; }
-    .badge-tr { fill: #c0dd97; }
-    .badge-text { font-size: 12px; font-weight: 600; }
-    .arr-un { stroke: #ba7517; stroke-width: 2; fill: none; }
-    .arr-tr { stroke: #3b6d11; stroke-width: 2; fill: none; stroke-dasharray: 7 5; }
-    .lbl-un { fill: #854f0b; font-size: 13px; }
-    .lbl-tr { fill: #3b6d11; font-size: 13px; }
-    .head-un { fill: #ba7517; }
-    .head-tr { fill: #3b6d11; }
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #1f1f1e; }
-      text { fill: #f1efe8; }
-      .cmd { fill: #d3d1c7; }
-      .note { fill: #b4b2a9; }
-      .lifeline { stroke: #5f5e5a; }
-      .actor { fill: #2c2c2a; stroke: #888780; }
-      .action { fill: #1f1f1e; stroke: #888780; }
-      .card-none { fill: #2c2c2a; stroke: #5f5e5a; }
-      .card-un { fill: #412402; stroke: #ba7517; }
-      .card-tr { fill: #173404; stroke: #639922; }
-      .badge-none { fill: #444441; }
-      .badge-un { fill: #854f0b; }
-      .badge-tr { fill: #3b6d11; }
-      .arr-un { stroke: #ef9f27; }
-      .arr-tr { stroke: #97c459; }
-      .lbl-un { fill: #fac775; }
-      .lbl-tr { fill: #c0dd97; }
-      .head-un { fill: #ef9f27; }
-      .head-tr { fill: #97c459; }
-    }
-  </style>
-  <defs>
-    <marker id="h-un" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="head-un" d="M0 0L10 5L0 10z"/></marker>
-    <marker id="h-tr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="head-tr" d="M0 0L10 5L0 10z"/></marker>
-  </defs>
-
-  <rect class="bg" x="0" y="0" width="1040" height="900"/>
-
-  <!-- Legend -->
-  <rect class="card-none" x="20" y="18" width="16" height="16" rx="3"/>
-  <text class="small" x="44" y="31">Nothing is sent</text>
-  <rect class="card-un" x="160" y="18" width="16" height="16" rx="3"/>
-  <text class="small" x="184" y="31">Untrusted channel is fine (email, chat)</text>
-  <rect class="card-tr" x="430" y="18" width="16" height="16" rx="3"/>
-  <text class="small" x="454" y="31">Trusted channel needed (call, in person)</text>
-  <line class="arr-un" x1="730" y1="26" x2="790" y2="26" marker-end="url(#h-un)"/>
-  <text class="small" x="800" y="31">untrusted</text>
-  <line class="arr-tr" x1="880" y1="26" x2="940" y2="26" marker-end="url(#h-tr)"/>
-  <text class="small" x="950" y="31">trusted</text>
-
-  <!-- Actors and lifelines -->
-  <line class="lifeline" x1="600" y1="96" x2="600" y2="884"/>
-  <line class="lifeline" x1="900" y1="96" x2="900" y2="884"/>
-  <rect class="actor" x="500" y="58" width="200" height="38" rx="8"/>
-  <text class="actor-text" x="600" y="82" text-anchor="middle">Recipient (friend)</text>
-  <rect class="actor" x="800" y="58" width="200" height="38" rx="8"/>
-  <text class="actor-text" x="900" y="82" text-anchor="middle">Sender (you)</text>
-
-  <!-- Step 1: T = 110 -->
-  <rect class="card-none" x="20" y="110" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="136">① Make keys</text>
-  <text class="cmd" x="36" y="160">rsatoy init --bits 3072   (recipient)</text>
-  <rect class="badge-none" x="36" y="172" width="130" height="22" rx="11"/>
-  <text class="badge-text" x="101" y="187" text-anchor="middle">No channel needed</text>
-  <text class="note" x="36" y="214">Private key stays on the recipient's computer.</text>
-  <rect class="action" x="490" y="145" width="220" height="44" rx="6"/>
-  <text class="small" x="600" y="171" text-anchor="middle">Make key pair, set passphrase</text>
-
-  <!-- Step 2: T = 240 -->
-  <rect class="card-un" x="20" y="240" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="266">② Send the public key</text>
-  <text class="cmd" x="36" y="290">rsatoy pubkey   (recipient, shows it again)</text>
-  <rect class="badge-un" x="36" y="302" width="250" height="22" rx="11"/>
-  <text class="badge-text" x="161" y="317" text-anchor="middle">Untrusted channel is fine (email, chat)</text>
-  <text class="note" x="36" y="344">Not secret, but someone could swap it, so step ③ checks it.</text>
-  <text class="lbl-un" x="750" y="262" text-anchor="middle">public key block</text>
-  <line class="arr-un" x1="600" y1="272" x2="896" y2="272" marker-end="url(#h-un)"/>
-  <rect class="action" x="790" y="296" width="220" height="44" rx="6"/>
-  <text class="small" x="900" y="322" text-anchor="middle">Save it as friend.pub</text>
-
-  <!-- Step 3: T = 370 -->
-  <rect class="card-tr" x="20" y="370" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="396">③ Check the fingerprint</text>
-  <text class="cmd" x="36" y="420">rsatoy encrypt friend.pub   (sender)</text>
-  <rect class="badge-tr" x="36" y="432" width="260" height="22" rx="11"/>
-  <text class="badge-text" x="166" y="447" text-anchor="middle">Trusted channel needed (call, in person)</text>
-  <text class="note" x="36" y="474">Not secret. Proves the key really is the recipient's.</text>
-  <text class="lbl-tr" x="750" y="392" text-anchor="middle">fingerprint, read aloud</text>
-  <line class="arr-tr" x1="600" y1="402" x2="896" y2="402" marker-end="url(#h-tr)"/>
-  <rect class="action" x="790" y="426" width="220" height="44" rx="6"/>
-  <text class="small" x="900" y="452" text-anchor="middle">Check it matches the screen</text>
-
-  <!-- Step 4: T = 500 -->
-  <rect class="card-un" x="20" y="500" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="526">④ Encrypt and send the secret</text>
-  <text class="cmd" x="36" y="550">same rsatoy encrypt run   (sender)</text>
-  <rect class="badge-un" x="36" y="562" width="250" height="22" rx="11"/>
-  <text class="badge-text" x="161" y="577" text-anchor="middle">Untrusted channel is fine (email, chat)</text>
-  <text class="note" x="36" y="604">Secret, but encrypted. Only the recipient can open it.</text>
-  <rect class="action" x="790" y="514" width="220" height="44" rx="6"/>
-  <text class="small" x="900" y="540" text-anchor="middle">Type secret at hidden prompt</text>
-  <text class="lbl-un" x="750" y="580" text-anchor="middle">message block</text>
-  <line class="arr-un" x1="900" y1="590" x2="604" y2="590" marker-end="url(#h-un)"/>
-
-  <!-- Step 5: T = 630 -->
-  <rect class="card-none" x="20" y="630" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="656">⑤ Decrypt</text>
-  <text class="cmd" x="36" y="680">rsatoy decrypt   (recipient)</text>
-  <rect class="badge-none" x="36" y="692" width="130" height="22" rx="11"/>
-  <text class="badge-text" x="101" y="707" text-anchor="middle">No channel needed</text>
-  <text class="note" x="36" y="734">Secret goes to the clipboard, not the screen.</text>
-  <rect class="action" x="490" y="665" width="220" height="44" rx="6"/>
-  <text class="small" x="600" y="691" text-anchor="middle">Enter passphrase, copy secret</text>
-
-  <!-- Step 6: T = 760 -->
-  <rect class="card-tr" x="20" y="760" width="440" height="114" rx="10"/>
-  <text class="title" x="36" y="786">⑥ Confirm the sender</text>
-  <text class="cmd" x="36" y="810">no command   (both)</text>
-  <rect class="badge-tr" x="36" y="822" width="260" height="22" rx="11"/>
-  <text class="badge-text" x="166" y="837" text-anchor="middle">Trusted channel needed (call, in person)</text>
-  <text class="note" x="36" y="864">Not secret. Catches a fake message from someone else.</text>
-  <text class="lbl-tr" x="750" y="786" text-anchor="middle">"Did you send this?"</text>
-  <line class="arr-tr" x1="600" y1="796" x2="896" y2="796" marker-end="url(#h-tr)"/>
-  <text class="lbl-tr" x="750" y="840" text-anchor="middle">"Yes"</text>
-  <line class="arr-tr" x1="900" y1="850" x2="604" y2="850" marker-end="url(#h-tr)"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="540" viewBox="0 0 1380 540" role="img">
+<title>rsatoy exchange as a swimlane</title>
+<desc>Three lanes, recipient, between the two people, and sender, across six steps. Each step column names the command, the channel it needs, and whether anything secret is sent.</desc>
+<style>
+.bg{fill:#fff} text{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;fill:#2c2c2a}
+.title{font-size:15px;font-weight:600} .cmd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;fill:#444441}
+.note{font-size:12px;fill:#5f5e5a} .small{font-size:12px} .lane-label{font-size:14px;font-weight:600}
+.lane-a{fill:#f7f6f2} .lane-b{fill:#efede6} .grid{stroke:#d3d1c7;stroke-width:1}
+.action{fill:#fff;stroke:#888780;stroke-width:1}
+.card-none{fill:#f1efe8;stroke:#b4b2a9} .card-un{fill:#faeeda;stroke:#ef9f27} .card-tr{fill:#eaf3de;stroke:#97c459}
+.badge-none{fill:#d3d1c7} .badge-un{fill:#fac775} .badge-tr{fill:#c0dd97} .badge-text{font-size:11px;font-weight:600}
+.item-un{fill:#faeeda;stroke:#ba7517;stroke-width:1.5} .item-tr{fill:#eaf3de;stroke:#3b6d11;stroke-width:1.5;stroke-dasharray:6 4}
+.arr-un{stroke:#ba7517;stroke-width:2;fill:none} .arr-tr{stroke:#3b6d11;stroke-width:2;fill:none;stroke-dasharray:6 4}
+.head-un{fill:#ba7517} .head-tr{fill:#3b6d11}
+@media (prefers-color-scheme: dark){
+.bg{fill:#1f1f1e} text{fill:#f1efe8} .cmd{fill:#d3d1c7} .note{fill:#b4b2a9}
+.lane-a{fill:#262625} .lane-b{fill:#2c2c2a} .grid{stroke:#444441}
+.action{fill:#1f1f1e;stroke:#888780}
+.card-none{fill:#2c2c2a;stroke:#5f5e5a} .card-un{fill:#412402;stroke:#ba7517} .card-tr{fill:#173404;stroke:#639922}
+.badge-none{fill:#444441} .badge-un{fill:#854f0b} .badge-tr{fill:#3b6d11}
+.item-un{fill:#412402;stroke:#ef9f27} .item-tr{fill:#173404;stroke:#97c459}
+.arr-un{stroke:#ef9f27} .arr-tr{stroke:#97c459} .head-un{fill:#ef9f27} .head-tr{fill:#97c459}}
+</style>
+<defs>
+<marker id="h-un" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head-un" d="M0 0L10 5L0 10z"/></marker>
+<marker id="h-tr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head-tr" d="M0 0L10 5L0 10z"/></marker>
+</defs>
+<rect class="bg" x="0" y="0" width="1380" height="540"/>
+<rect class="card-none" x="20" y="16" width="16" height="16" rx="3"/><text class="small" x="44" y="29">Nothing is sent</text>
+<rect class="card-un" x="170" y="16" width="16" height="16" rx="3"/><text class="small" x="194" y="29">Untrusted channel is fine (email, chat)</text>
+<rect class="card-tr" x="470" y="16" width="16" height="16" rx="3"/><text class="small" x="494" y="29">Trusted channel needed (call, in person)</text>
+<line class="arr-un" x1="780" y1="24" x2="830" y2="24" marker-end="url(#h-un)"/><text class="small" x="838" y="29">untrusted</text>
+<line class="arr-tr" x1="920" y1="24" x2="970" y2="24" marker-end="url(#h-tr)"/><text class="small" x="978" y="29">trusted</text>
+<rect class="lane-a" x="20" y="180" width="1340" height="110"/>
+<text class="lane-label" x="34" y="233">Recipient</text><text class="note" x="34" y="251">(friend)</text>
+<rect class="lane-b" x="20" y="290" width="1340" height="110"/>
+<text class="lane-label" x="34" y="343">Between you</text><text class="note" x="34" y="361">(what is sent)</text>
+<rect class="lane-a" x="20" y="400" width="1340" height="110"/>
+<text class="lane-label" x="34" y="453">Sender</text><text class="note" x="34" y="471">(you)</text>
+<line class="grid" x1="20" y1="180" x2="1360" y2="180"/>
+<line class="grid" x1="20" y1="290" x2="1360" y2="290"/>
+<line class="grid" x1="20" y1="400" x2="1360" y2="400"/>
+<line class="grid" x1="20" y1="510" x2="1360" y2="510"/>
+<line class="grid" x1="160" y1="180" x2="160" y2="510"/>
+<line class="grid" x1="360" y1="180" x2="360" y2="510"/>
+<line class="grid" x1="560" y1="180" x2="560" y2="510"/>
+<line class="grid" x1="760" y1="180" x2="760" y2="510"/>
+<line class="grid" x1="960" y1="180" x2="960" y2="510"/>
+<line class="grid" x1="1160" y1="180" x2="1160" y2="510"/>
+<line class="grid" x1="1360" y1="180" x2="1360" y2="510"/>
+<rect class="card-none" x="166" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="176" y="74">① Make keys</text>
+<text class="cmd" x="176" y="96">rsatoy init --bits 3072</text>
+<rect class="badge-none" x="176" y="108" width="90" height="20" rx="10"/><text class="badge-text" x="221.0" y="122" text-anchor="middle">No channel</text>
+<text class="note" x="176" y="153">Nothing leaves the computer</text>
+<rect class="card-un" x="366" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="376" y="74">② Send public key</text>
+<text class="cmd" x="376" y="96">rsatoy pubkey</text>
+<rect class="badge-un" x="376" y="108" width="110" height="20" rx="10"/><text class="badge-text" x="431.0" y="122" text-anchor="middle">Untrusted OK</text>
+<text class="note" x="376" y="153">Not secret, checked in ③</text>
+<rect class="card-tr" x="566" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="576" y="74">③ Check fingerprint</text>
+<text class="cmd" x="576" y="96">rsatoy encrypt friend.pub</text>
+<rect class="badge-tr" x="576" y="108" width="124" height="20" rx="10"/><text class="badge-text" x="638.0" y="122" text-anchor="middle">Trusted needed</text>
+<text class="note" x="576" y="153">Not secret</text>
+<rect class="card-un" x="766" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="776" y="74">④ Send the secret</text>
+<text class="cmd" x="776" y="96">same encrypt run</text>
+<rect class="badge-un" x="776" y="108" width="110" height="20" rx="10"/><text class="badge-text" x="831.0" y="122" text-anchor="middle">Untrusted OK</text>
+<text class="note" x="776" y="153">Secret, but encrypted</text>
+<rect class="card-none" x="966" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="976" y="74">⑤ Decrypt</text>
+<text class="cmd" x="976" y="96">rsatoy decrypt</text>
+<rect class="badge-none" x="976" y="108" width="90" height="20" rx="10"/><text class="badge-text" x="1021.0" y="122" text-anchor="middle">No channel</text>
+<text class="note" x="976" y="153">Secret goes to clipboard</text>
+<rect class="card-tr" x="1166" y="50" width="188" height="120" rx="8"/>
+<text class="title" x="1176" y="74">⑥ Confirm sender</text>
+<text class="cmd" x="1176" y="96">no command</text>
+<rect class="badge-tr" x="1176" y="108" width="124" height="20" rx="10"/><text class="badge-text" x="1238.0" y="122" text-anchor="middle">Trusted needed</text>
+<text class="note" x="1176" y="153">Not secret</text>
+<rect class="item-un" x="385" y="327" width="150" height="36" rx="18"/><text class="small" x="460" y="349" text-anchor="middle">public key block</text>
+<line class="arr-un" x1="460" y1="261" x2="460" y2="324" marker-end="url(#h-un)"/>
+<line class="arr-un" x1="460" y1="363" x2="460" y2="426" marker-end="url(#h-un)"/>
+<rect class="item-tr" x="585" y="327" width="150" height="36" rx="18"/><text class="small" x="660" y="349" text-anchor="middle">fingerprint</text>
+<line class="arr-tr" x1="660" y1="261" x2="660" y2="324" marker-end="url(#h-tr)"/>
+<line class="arr-tr" x1="660" y1="363" x2="660" y2="426" marker-end="url(#h-tr)"/>
+<rect class="item-un" x="785" y="327" width="150" height="36" rx="18"/><text class="small" x="860" y="349" text-anchor="middle">message block</text>
+<line class="arr-un" x1="860" y1="429" x2="860" y2="366" marker-end="url(#h-un)"/>
+<line class="arr-un" x1="860" y1="327" x2="860" y2="264" marker-end="url(#h-un)"/>
+<rect class="item-tr" x="1185" y="327" width="150" height="36" rx="18"/><text class="small" x="1260" y="349" text-anchor="middle">confirmation</text>
+<line class="arr-tr" x1="1260" y1="261" x2="1260" y2="324" marker-end="url(#h-tr)"/>
+<line class="arr-tr" x1="1260" y1="363" x2="1260" y2="426" marker-end="url(#h-tr)"/>
+<rect class="action" x="180" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="260" y="231" text-anchor="middle">Make key pair,</text><text class="small" x="260" y="247" text-anchor="middle">set passphrase</text>
+<rect class="action" x="380" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="460" y="239" text-anchor="middle">Show public key</text>
+<rect class="action" x="380" y="429" width="160" height="52" rx="6"/>
+<text class="small" x="460" y="459" text-anchor="middle">Save as friend.pub</text>
+<rect class="action" x="580" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="660" y="231" text-anchor="middle">Read fingerprint</text><text class="small" x="660" y="247" text-anchor="middle">aloud</text>
+<rect class="action" x="580" y="429" width="160" height="52" rx="6"/>
+<text class="small" x="660" y="451" text-anchor="middle">Check it matches</text><text class="small" x="660" y="467" text-anchor="middle">the screen</text>
+<rect class="action" x="780" y="429" width="160" height="52" rx="6"/>
+<text class="small" x="860" y="451" text-anchor="middle">Type secret at</text><text class="small" x="860" y="467" text-anchor="middle">hidden prompt</text>
+<rect class="action" x="780" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="860" y="239" text-anchor="middle">Receive it</text>
+<rect class="action" x="980" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="1060" y="231" text-anchor="middle">Enter passphrase,</text><text class="small" x="1060" y="247" text-anchor="middle">secret to clipboard</text>
+<rect class="action" x="1180" y="209" width="160" height="52" rx="6"/>
+<text class="small" x="1260" y="231" text-anchor="middle">Ask: did you</text><text class="small" x="1260" y="247" text-anchor="middle">send this?</text>
+<rect class="action" x="1180" y="429" width="160" height="52" rx="6"/>
+<text class="small" x="1260" y="459" text-anchor="middle">Answer: yes</text>
 </svg>
