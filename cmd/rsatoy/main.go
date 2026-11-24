@@ -22,7 +22,8 @@ import (
 	"github.com/pomodorozhong/rsatoy/internal/keys"
 )
 
-const version = "0.1.0-dev"
+// version is set at release time with -ldflags "-X main.version=...".
+var version = "0.1.0-dev"
 
 const usage = `rsatoy: send a secret to a friend so only they can read it.
 
