@@ -7,19 +7,21 @@
 .note{font-size:12px;fill:#5f5e5a} .small{font-size:12px} .lane-label{font-size:14px;font-weight:600}
 .lane-a{fill:#f7f6f2} .lane-b{fill:#efede6} .grid{stroke:#d3d1c7;stroke-width:1}
 .action{fill:#fff;stroke:#888780;stroke-width:1}
-.card-none{fill:#f1efe8;stroke:#b4b2a9} .card-un{fill:#faeeda;stroke:#ef9f27} .card-tr{fill:#eaf3de;stroke:#97c459}
-.badge-none{fill:#d3d1c7} .badge-un{fill:#fac775} .badge-tr{fill:#c0dd97} .num-text{font-size:20px;font-weight:700;fill:#fff} .num-none{fill:#5f5e5a} .num-un{fill:#ba7517} .num-tr{fill:#3b6d11} .badge-text{font-size:11px;font-weight:600}
-.item-un{fill:#faeeda;stroke:#ba7517;stroke-width:1.5} .item-tr{fill:#eaf3de;stroke:#3b6d11;stroke-width:1.5;stroke-dasharray:6 4}
-.arr-un{stroke:#ba7517;stroke-width:2;fill:none} .arr-tr{stroke:#3b6d11;stroke-width:2;fill:none;stroke-dasharray:6 4}
-.head-un{fill:#ba7517} .head-tr{fill:#3b6d11}
+.card-none{fill:#f1efe8;stroke:#b4b2a9} .card-un{fill:#eaf3de;stroke:#97c459} .card-tr{fill:#fcebeb;stroke:#f09595}
+.badge-none{fill:#d3d1c7} .badge-un{fill:#c0dd97} .badge-tr{fill:#f7c1c1} .badge-text{font-size:11px;font-weight:600}
+.num-text{font-size:20px;font-weight:700;fill:#fff} .num-none{fill:#5f5e5a} .num-un{fill:#3b6d11} .num-tr{fill:#a32d2d}
+.item-un{fill:#eaf3de;stroke:#3b6d11;stroke-width:1.5} .item-tr{fill:#fcebeb;stroke:#a32d2d;stroke-width:1.5;stroke-dasharray:6 4}
+.arr-un{stroke:#3b6d11;stroke-width:2;fill:none} .arr-tr{stroke:#a32d2d;stroke-width:2;fill:none;stroke-dasharray:6 4}
+.head-un{fill:#3b6d11} .head-tr{fill:#a32d2d}
 @media (prefers-color-scheme: dark){
 .bg{fill:#1f1f1e} text{fill:#f1efe8} .cmd{fill:#d3d1c7} .note{fill:#b4b2a9}
 .lane-a{fill:#262625} .lane-b{fill:#2c2c2a} .grid{stroke:#444441}
 .action{fill:#1f1f1e;stroke:#888780}
-.card-none{fill:#2c2c2a;stroke:#5f5e5a} .card-un{fill:#412402;stroke:#ba7517} .card-tr{fill:#173404;stroke:#639922}
-.badge-none{fill:#444441} .num-none{fill:#888780} .num-un{fill:#ba7517} .num-tr{fill:#639922} .badge-un{fill:#854f0b} .badge-tr{fill:#3b6d11}
-.item-un{fill:#412402;stroke:#ef9f27} .item-tr{fill:#173404;stroke:#97c459}
-.arr-un{stroke:#ef9f27} .arr-tr{stroke:#97c459} .head-un{fill:#ef9f27} .head-tr{fill:#97c459}}
+.card-none{fill:#2c2c2a;stroke:#5f5e5a} .card-un{fill:#173404;stroke:#639922} .card-tr{fill:#501313;stroke:#a32d2d}
+.badge-none{fill:#444441} .badge-un{fill:#3b6d11} .badge-tr{fill:#791f1f}
+.num-none{fill:#888780} .num-un{fill:#639922} .num-tr{fill:#e24b4a}
+.item-un{fill:#173404;stroke:#97c459} .item-tr{fill:#501313;stroke:#f09595}
+.arr-un{stroke:#97c459} .arr-tr{stroke:#f09595} .head-un{fill:#97c459} .head-tr{fill:#f09595}}
 </style>
 <defs>
 <marker id="h-un" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head-un" d="M0 0L10 5L0 10z"/></marker>
@@ -27,10 +29,10 @@
 </defs>
 <rect class="bg" x="0" y="0" width="1380" height="540"/>
 <rect class="card-none" x="20" y="16" width="16" height="16" rx="3"/><text class="small" x="44" y="29">Nothing is sent</text>
-<rect class="card-un" x="170" y="16" width="16" height="16" rx="3"/><text class="small" x="194" y="29">Untrusted channel is fine (email, chat)</text>
-<rect class="card-tr" x="470" y="16" width="16" height="16" rx="3"/><text class="small" x="494" y="29">Trusted channel needed (call, in person)</text>
-<line class="arr-un" x1="780" y1="24" x2="830" y2="24" marker-end="url(#h-un)"/><text class="small" x="838" y="29">untrusted</text>
-<line class="arr-tr" x1="920" y1="24" x2="970" y2="24" marker-end="url(#h-tr)"/><text class="small" x="978" y="29">trusted</text>
+<rect class="card-un" x="170" y="16" width="16" height="16" rx="3"/><text class="small" x="194" y="29">Low risk: untrusted channel is fine (email, chat)</text>
+<rect class="card-tr" x="520" y="16" width="16" height="16" rx="3"/><text class="small" x="544" y="29">Needs care: trusted channel needed (call, in person)</text>
+<line class="arr-un" x1="900" y1="24" x2="950" y2="24" marker-end="url(#h-un)"/><text class="small" x="958" y="29">untrusted</text>
+<line class="arr-tr" x1="1040" y1="24" x2="1090" y2="24" marker-end="url(#h-tr)"/><text class="small" x="1098" y="29">trusted</text>
 <rect class="lane-a" x="20" y="180" width="1340" height="110"/>
 <text class="lane-label" x="34" y="233">Recipient</text><text class="note" x="34" y="251">(friend)</text>
 <rect class="lane-b" x="20" y="290" width="1340" height="110"/>

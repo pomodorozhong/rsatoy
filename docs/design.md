@@ -22,7 +22,7 @@ This document describes what rsatoy does, what it protects against, and the choi
 
 The recipient is the friend who will receive the secret. The sender is the person who has it. An **untrusted channel** is any way of sending text where someone else might read or change it: email, a chat app, a pastebin. A **trusted channel** is one where each person knows they are really talking to the other: a voice or video call, or in person.
 
-The diagram is a swimlane: time runs left to right in six steps, and each person has a lane, with a middle lane for what passes between them. The card above each step says which command runs, which channel the step needs, and whether anything secret is sent; its color matches the channel. Solid orange arrows go over an untrusted channel, dashed green arrows over a trusted one.
+The diagram is a swimlane: time runs left to right in six steps, and each person has a lane, with a middle lane for what passes between them. The card above each step says which command runs, which channel the step needs, and whether anything secret is sent. Colors show the risk of the step: gray steps send nothing, green steps are low risk and can use any channel, and red steps need care because they must use a trusted channel. Solid green arrows go over an untrusted channel, dashed red arrows over a trusted one.
 
 ![Swimlane of the six steps of an rsatoy exchange between the recipient and the sender](exchange.svg)
 
