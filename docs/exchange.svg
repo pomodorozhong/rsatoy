@@ -8,7 +8,7 @@
 .lane-a{fill:#f7f6f2} .lane-b{fill:#efede6} .grid{stroke:#d3d1c7;stroke-width:1}
 .action{fill:#fff;stroke:#888780;stroke-width:1}
 .card-none{fill:#f1efe8;stroke:#b4b2a9} .card-un{fill:#faeeda;stroke:#ef9f27} .card-tr{fill:#eaf3de;stroke:#97c459}
-.badge-none{fill:#d3d1c7} .badge-un{fill:#fac775} .badge-tr{fill:#c0dd97} .badge-text{font-size:11px;font-weight:600}
+.badge-none{fill:#d3d1c7} .badge-un{fill:#fac775} .badge-tr{fill:#c0dd97} .num-text{font-size:20px;font-weight:700;fill:#fff} .num-none{fill:#5f5e5a} .num-un{fill:#ba7517} .num-tr{fill:#3b6d11} .badge-text{font-size:11px;font-weight:600}
 .item-un{fill:#faeeda;stroke:#ba7517;stroke-width:1.5} .item-tr{fill:#eaf3de;stroke:#3b6d11;stroke-width:1.5;stroke-dasharray:6 4}
 .arr-un{stroke:#ba7517;stroke-width:2;fill:none} .arr-tr{stroke:#3b6d11;stroke-width:2;fill:none;stroke-dasharray:6 4}
 .head-un{fill:#ba7517} .head-tr{fill:#3b6d11}
@@ -17,7 +17,7 @@
 .lane-a{fill:#262625} .lane-b{fill:#2c2c2a} .grid{stroke:#444441}
 .action{fill:#1f1f1e;stroke:#888780}
 .card-none{fill:#2c2c2a;stroke:#5f5e5a} .card-un{fill:#412402;stroke:#ba7517} .card-tr{fill:#173404;stroke:#639922}
-.badge-none{fill:#444441} .badge-un{fill:#854f0b} .badge-tr{fill:#3b6d11}
+.badge-none{fill:#444441} .num-none{fill:#888780} .num-un{fill:#ba7517} .num-tr{fill:#639922} .badge-un{fill:#854f0b} .badge-tr{fill:#3b6d11}
 .item-un{fill:#412402;stroke:#ef9f27} .item-tr{fill:#173404;stroke:#97c459}
 .arr-un{stroke:#ef9f27} .arr-tr{stroke:#97c459} .head-un{fill:#ef9f27} .head-tr{fill:#97c459}}
 </style>
@@ -49,35 +49,35 @@
 <line class="grid" x1="1160" y1="180" x2="1160" y2="510"/>
 <line class="grid" x1="1360" y1="180" x2="1360" y2="510"/>
 <rect class="card-none" x="166" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="176" y="74">① Make keys</text>
-<text class="cmd" x="176" y="96">rsatoy init --bits 3072</text>
-<rect class="badge-none" x="176" y="108" width="90" height="20" rx="10"/><text class="badge-text" x="221.0" y="122" text-anchor="middle">No channel</text>
-<text class="note" x="176" y="153">Nothing leaves the computer</text>
+<circle class="num-none" cx="194" cy="76" r="17"/><text class="num-text" x="194" y="83" text-anchor="middle">1</text><text class="title" x="220" y="81">Make keys</text>
+<text class="cmd" x="176" y="110">rsatoy init --bits 3072</text>
+<rect class="badge-none" x="176" y="120" width="90" height="20" rx="10"/><text class="badge-text" x="221.0" y="134" text-anchor="middle">No channel</text>
+<text class="note" x="176" y="159">Nothing leaves the computer</text>
 <rect class="card-un" x="366" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="376" y="74">② Send public key</text>
-<text class="cmd" x="376" y="96">rsatoy pubkey</text>
-<rect class="badge-un" x="376" y="108" width="110" height="20" rx="10"/><text class="badge-text" x="431.0" y="122" text-anchor="middle">Untrusted OK</text>
-<text class="note" x="376" y="153">Not secret, checked in ③</text>
+<circle class="num-un" cx="394" cy="76" r="17"/><text class="num-text" x="394" y="83" text-anchor="middle">2</text><text class="title" x="420" y="81">Send public key</text>
+<text class="cmd" x="376" y="110">rsatoy pubkey</text>
+<rect class="badge-un" x="376" y="120" width="110" height="20" rx="10"/><text class="badge-text" x="431.0" y="134" text-anchor="middle">Untrusted OK</text>
+<text class="note" x="376" y="159">Not secret, checked in step 3</text>
 <rect class="card-tr" x="566" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="576" y="74">③ Check fingerprint</text>
-<text class="cmd" x="576" y="96">rsatoy encrypt friend.pub</text>
-<rect class="badge-tr" x="576" y="108" width="124" height="20" rx="10"/><text class="badge-text" x="638.0" y="122" text-anchor="middle">Trusted needed</text>
-<text class="note" x="576" y="153">Not secret</text>
+<circle class="num-tr" cx="594" cy="76" r="17"/><text class="num-text" x="594" y="83" text-anchor="middle">3</text><text class="title" x="620" y="81">Check fingerprint</text>
+<text class="cmd" x="576" y="110">rsatoy encrypt friend.pub</text>
+<rect class="badge-tr" x="576" y="120" width="124" height="20" rx="10"/><text class="badge-text" x="638.0" y="134" text-anchor="middle">Trusted needed</text>
+<text class="note" x="576" y="159">Not secret</text>
 <rect class="card-un" x="766" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="776" y="74">④ Send the secret</text>
-<text class="cmd" x="776" y="96">same encrypt run</text>
-<rect class="badge-un" x="776" y="108" width="110" height="20" rx="10"/><text class="badge-text" x="831.0" y="122" text-anchor="middle">Untrusted OK</text>
-<text class="note" x="776" y="153">Secret, but encrypted</text>
+<circle class="num-un" cx="794" cy="76" r="17"/><text class="num-text" x="794" y="83" text-anchor="middle">4</text><text class="title" x="820" y="81">Send the secret</text>
+<text class="cmd" x="776" y="110">same encrypt run</text>
+<rect class="badge-un" x="776" y="120" width="110" height="20" rx="10"/><text class="badge-text" x="831.0" y="134" text-anchor="middle">Untrusted OK</text>
+<text class="note" x="776" y="159">Secret, but encrypted</text>
 <rect class="card-none" x="966" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="976" y="74">⑤ Decrypt</text>
-<text class="cmd" x="976" y="96">rsatoy decrypt</text>
-<rect class="badge-none" x="976" y="108" width="90" height="20" rx="10"/><text class="badge-text" x="1021.0" y="122" text-anchor="middle">No channel</text>
-<text class="note" x="976" y="153">Secret goes to clipboard</text>
+<circle class="num-none" cx="994" cy="76" r="17"/><text class="num-text" x="994" y="83" text-anchor="middle">5</text><text class="title" x="1020" y="81">Decrypt</text>
+<text class="cmd" x="976" y="110">rsatoy decrypt</text>
+<rect class="badge-none" x="976" y="120" width="90" height="20" rx="10"/><text class="badge-text" x="1021.0" y="134" text-anchor="middle">No channel</text>
+<text class="note" x="976" y="159">Secret goes to clipboard</text>
 <rect class="card-tr" x="1166" y="50" width="188" height="120" rx="8"/>
-<text class="title" x="1176" y="74">⑥ Confirm sender</text>
-<text class="cmd" x="1176" y="96">no command</text>
-<rect class="badge-tr" x="1176" y="108" width="124" height="20" rx="10"/><text class="badge-text" x="1238.0" y="122" text-anchor="middle">Trusted needed</text>
-<text class="note" x="1176" y="153">Not secret</text>
+<circle class="num-tr" cx="1194" cy="76" r="17"/><text class="num-text" x="1194" y="83" text-anchor="middle">6</text><text class="title" x="1220" y="81">Confirm sender</text>
+<text class="cmd" x="1176" y="110">no command</text>
+<rect class="badge-tr" x="1176" y="120" width="124" height="20" rx="10"/><text class="badge-text" x="1238.0" y="134" text-anchor="middle">Trusted needed</text>
+<text class="note" x="1176" y="159">Not secret</text>
 <rect class="item-un" x="385" y="327" width="150" height="36" rx="18"/><text class="small" x="460" y="349" text-anchor="middle">public key block</text>
 <line class="arr-un" x1="460" y1="261" x2="460" y2="324" marker-end="url(#h-un)"/>
 <line class="arr-un" x1="460" y1="363" x2="460" y2="426" marker-end="url(#h-un)"/>
