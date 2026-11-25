@@ -4,7 +4,7 @@ A small command-line tool for sending a secret, such as an API key, to a friend 
 
 rsatoy is only the app layer. All cryptography comes from established, audited libraries; rsatoy never implements a cipher itself. See [docs/design.md](docs/design.md) for how it works and why.
 
-> Status: early version, not released yet. There are no downloads on a releases page yet; build it from source for now.
+> Status: early version. The first release, [v0.1.0](https://github.com/pomodorozhong/rsatoy/releases/tag/v0.1.0), has downloads for Windows and macOS; see [Install](#install).
 
 ## How it works
 
@@ -15,7 +15,9 @@ rsatoy is only the app layer. All cryptography comes from established, audited l
 5. Your friend runs `rsatoy decrypt` and pastes the text. It shows a short message ID, which your friend reads to you over the call so you can check it matches the one `encrypt` showed you. That proves the message really came from you.
 6. Your friend enters their passphrase, and the secret is copied to their clipboard.
 
-There is a diagram of who sends what to whom, step by step, in [docs/design.md](docs/design.md#the-exchange-step-by-step).
+This chart shows who sends what to whom at each step. [docs/design.md](docs/design.md#the-exchange-step-by-step) explains each step in more detail.
+
+![Swimlane of the six steps of an rsatoy exchange between the recipient and the sender](docs/exchange.svg)
 
 The easiest way to use it is to run `rsatoy` with no arguments, or double-click it. It asks whether you are sending or receiving, then walks you through each step, showing where you are on a chart. `rsatoy guide` prints the same chart without doing anything. Both speak English or Traditional Chinese (繁體中文), following your system language; use `--lang en` or `--lang zh-Hant` to choose.
 
@@ -74,7 +76,7 @@ GOOS=darwin  GOARCH=amd64 go build -o dist/rsatoy-macos-amd64 ./cmd/rsatoy
 
 ## Making a release
 
-Push a version tag, and GitHub Actions builds the files and publishes the release:
+Push a version tag on `main`, after the release's changes are merged, and GitHub Actions builds the files and publishes the release:
 
 ```bash
 git tag v0.1.0
