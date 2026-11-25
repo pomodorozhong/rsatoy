@@ -15,7 +15,9 @@ rsatoy is only the app layer. All cryptography comes from established, audited l
 5. Your friend runs `rsatoy decrypt` and pastes the text. It shows a short message ID, which your friend reads to you over the call so you can check it matches the one `encrypt` showed you. That proves the message really came from you.
 6. Your friend enters their passphrase, and the secret is copied to their clipboard.
 
-There is a diagram of who sends what to whom, step by step, in [docs/design.md](docs/design.md#the-exchange-step-by-step).
+This chart shows who sends what to whom at each step. [docs/design.md](docs/design.md#the-exchange-step-by-step) explains each step in more detail.
+
+![Swimlane of the six steps of an rsatoy exchange between the recipient and the sender](docs/exchange.svg)
 
 The easiest way to use it is to run `rsatoy` with no arguments, or double-click it. It asks whether you are sending or receiving, then walks you through each step, showing where you are on a chart. `rsatoy guide` prints the same chart without doing anything. Both speak English or Traditional Chinese (繁體中文), following your system language; use `--lang en` or `--lang zh-Hant` to choose.
 
